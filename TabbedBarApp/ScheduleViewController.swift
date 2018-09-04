@@ -9,6 +9,8 @@
 import UIKit
 
 class ScheduleViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
+    let datePicker = UIDatePicker()
+    var dayArray = NSMutableArray()
 
     let selectRoomArray = ["BEDROOM","LIVING ROOM","DINING ROOM","KITCHEN"]
     
@@ -32,7 +34,25 @@ class ScheduleViewController: UIViewController,UITableViewDelegate,UITableViewDa
     @IBOutlet weak var dropDown2: UIButton!
     
     
+    @IBOutlet weak var texfield: UITextField!
     //DropDown button1 Action
+    @IBOutlet weak var sunButton: UIButton!
+    @IBOutlet weak var monButton: UIButton!
+    
+    
+    @IBOutlet weak var tueButton: UIButton!
+    
+    
+    @IBOutlet weak var wedButton: UIButton!
+    
+    
+    @IBOutlet weak var thuButton: UIButton!
+    
+    
+    @IBOutlet weak var friButton: UIButton!
+    
+    
+    @IBOutlet weak var satButton: UIButton!
     
     @IBAction func dropDownAction(_ sender: UIButton) {
         
@@ -40,7 +60,7 @@ class ScheduleViewController: UIViewController,UITableViewDelegate,UITableViewDa
         let displayWidth: CGFloat = self.view.frame.width
         // let displayHeight: CGFloat = self.view.frame.height
         
-        myTableView = UITableView(frame: CGRect(x: 150, y: 180, width: displayWidth, height: 200))
+        myTableView = UITableView(frame: CGRect(x: 20, y: 220, width: displayWidth-42, height: 200))
         myTableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         myTableView.dataSource = self
         myTableView.delegate = self
@@ -58,7 +78,7 @@ class ScheduleViewController: UIViewController,UITableViewDelegate,UITableViewDa
         let displayWidth: CGFloat = self.view.frame.width
         // let displayHeight: CGFloat = self.view.frame.height
         
-        myTableView2 = UITableView(frame: CGRect(x: 150, y: 280, width: displayWidth, height: 200))
+        myTableView2 = UITableView(frame: CGRect(x: 20, y: 310, width: displayWidth-42, height: 200))
         myTableView2.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         myTableView2.dataSource = self
         myTableView2.delegate = self
@@ -68,9 +88,6 @@ class ScheduleViewController: UIViewController,UITableViewDelegate,UITableViewDa
         
     }
     
-    
-    
-  
     override func viewDidLoad() {
         super.viewDidLoad()
        updateButton.layer.cornerRadius = 15
@@ -94,7 +111,27 @@ class ScheduleViewController: UIViewController,UITableViewDelegate,UITableViewDa
         myTableView.layer.cornerRadius = 15
         myTableView.clipsToBounds = true
         
+        sunButton.layer.cornerRadius = 10
+        sunButton.clipsToBounds = true
         
+        monButton.layer.cornerRadius = 10
+        monButton.clipsToBounds = true
+        
+        tueButton.layer.cornerRadius = 10
+        tueButton.clipsToBounds = true
+        
+        wedButton.layer.cornerRadius = 10
+        wedButton.clipsToBounds = true
+        
+        thuButton.layer.cornerRadius = 10
+        thuButton.clipsToBounds = true
+        
+        friButton.layer.cornerRadius = 10
+        friButton.clipsToBounds = true
+        
+        satButton.layer.cornerRadius = 10
+        satButton.clipsToBounds = true
+    
         //To make textfield border invisible
         let border = CALayer()
         let width = CGFloat(0.5)
@@ -104,6 +141,26 @@ class ScheduleViewController: UIViewController,UITableViewDelegate,UITableViewDa
         textField.layer.addSublayer(border)
         textField.layer.masksToBounds = true
         // Do any additional setup after loading the view.
+        
+        
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        toolBar.isUserInteractionEnabled = true
+        
+        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.done, target: self, action: #selector(doneCompleted))
+        
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: self, action: #selector(cancelCompleted))
+        
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        
+        toolBar.setItems([doneButton,cancelButton,spaceButton], animated: true)
+        
+        datePicker.datePickerMode = .time
+        texfield.inputAccessoryView = toolBar
+        texfield.inputView = datePicker
+        datePicker.backgroundColor = .white
+        datePicker.setValue(UIColor.red, forKey:"textColor")
+    
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -145,17 +202,41 @@ class ScheduleViewController: UIViewController,UITableViewDelegate,UITableViewDa
         
     }
     
-    
-    
     @IBAction func updateAction(_ sender: UIButton) {
         
         
-        
-        
-        
+    }
+    @objc func doneCompleted(sender:UIDatePicker)
+    {
+        let formatter = DateFormatter()
+
+        formatter.timeStyle = .short
+        texfield.text = formatter.string(from: datePicker.date)
+       // datePicker.removeFromSuperview()
+        view.endEditing(true)
+    }
+    @objc func cancelCompleted(){
+        view.endEditing(true)
     }
     
+    @IBAction func daySelectionAction(_ sender: UIButton) {
+        
+        self.actionForDaySelection(sender1: sender, txt: (sender.titleLabel?.text)!)
+    }
 
+    
+    func actionForDaySelection(sender1:UIButton,txt:String){
+        if(dayArray.contains(txt)){
+                            dayArray.remove(txt)
+                            sender1.backgroundColor=UIColor.init(red: 239/255, green: 239/255, blue: 244/255, alpha: 1)
+                        }else{
+                            dayArray.add(txt)
+                            sender1.backgroundColor=UIColor.orange
+        }
+    }
+    
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
