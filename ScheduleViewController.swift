@@ -9,6 +9,7 @@
 import UIKit
 
 class ScheduleViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
+    let datePicker = UIDatePicker()
 
     let selectRoomArray = ["BEDROOM","LIVING ROOM","DINING ROOM","KITCHEN"]
     
@@ -32,6 +33,7 @@ class ScheduleViewController: UIViewController,UITableViewDelegate,UITableViewDa
     @IBOutlet weak var dropDown2: UIButton!
     
     
+    @IBOutlet weak var texfield: UITextField!
     //DropDown button1 Action
     
     @IBAction func dropDownAction(_ sender: UIButton) {
@@ -40,7 +42,7 @@ class ScheduleViewController: UIViewController,UITableViewDelegate,UITableViewDa
         let displayWidth: CGFloat = self.view.frame.width
         // let displayHeight: CGFloat = self.view.frame.height
         
-        myTableView = UITableView(frame: CGRect(x: 150, y: 180, width: displayWidth, height: 200))
+        myTableView = UITableView(frame: CGRect(x: 20, y: 220, width: displayWidth-42, height: 200))
         myTableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         myTableView.dataSource = self
         myTableView.delegate = self
@@ -58,7 +60,7 @@ class ScheduleViewController: UIViewController,UITableViewDelegate,UITableViewDa
         let displayWidth: CGFloat = self.view.frame.width
         // let displayHeight: CGFloat = self.view.frame.height
         
-        myTableView2 = UITableView(frame: CGRect(x: 150, y: 280, width: displayWidth, height: 200))
+        myTableView2 = UITableView(frame: CGRect(x: 20, y: 310, width: displayWidth-42, height: 200))
         myTableView2.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         myTableView2.dataSource = self
         myTableView2.delegate = self
@@ -104,6 +106,28 @@ class ScheduleViewController: UIViewController,UITableViewDelegate,UITableViewDa
         textField.layer.addSublayer(border)
         textField.layer.masksToBounds = true
         // Do any additional setup after loading the view.
+        
+        
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        toolBar.isUserInteractionEnabled = true
+        
+        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.done, target: self, action: #selector(doneCompleted))
+        
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: self, action: #selector(cancelCompleted))
+        
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        
+        toolBar.setItems([doneButton,cancelButton,spaceButton], animated: true)
+        
+        datePicker.datePickerMode = .time
+        texfield.inputAccessoryView = toolBar
+        texfield.inputView = datePicker
+        datePicker.backgroundColor = .white
+        datePicker.setValue(UIColor.red, forKey:"textColor")
+        
+
+        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -154,6 +178,24 @@ class ScheduleViewController: UIViewController,UITableViewDelegate,UITableViewDa
         
         
     }
+    @objc func doneCompleted(sender:UIDatePicker)
+    {
+        let formatter = DateFormatter()
+
+        formatter.timeStyle = .short
+        texfield.text = formatter.string(from: datePicker.date)
+       // datePicker.removeFromSuperview()
+        view.endEditing(true)
+    }
+    @objc func cancelCompleted(){
+        view.endEditing(true)
+    }
+    
+    @IBAction func daySelectionAction(_ sender: UIButton) {
+        
+        
+    }
+    
     
 
     override func didReceiveMemoryWarning() {
