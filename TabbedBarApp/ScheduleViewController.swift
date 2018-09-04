@@ -218,31 +218,12 @@ class ScheduleViewController: UIViewController,UITableViewDelegate,UITableViewDa
     @objc func cancelCompleted(){
         view.endEditing(true)
     }
-    @objc func doneCompleted(sender:UIDatePicker)
-    {
-        let formatter = DateFormatter()
-
-        formatter.timeStyle = .short
-        texfield.text = formatter.string(from: datePicker.date)
-       // datePicker.removeFromSuperview()
-        view.endEditing(true)
-    }
-    @objc func cancelCompleted(){
-        view.endEditing(true)
-    }
-    
-    @IBAction func daySelectionAction(_ sender: UIButton) {
-        
-        
-    }
-    
-    
+ 
     @IBAction func daySelectionAction(_ sender: UIButton) {
         
         self.actionForDaySelection(sender1: sender, txt: (sender.titleLabel?.text)!)
     }
 
-    
     func actionForDaySelection(sender1:UIButton,txt:String){
         if(dayArray.contains(txt)){
                             dayArray.remove(txt)
