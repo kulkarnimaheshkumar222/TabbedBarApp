@@ -8,13 +8,13 @@
 
 import UIKit
 
-class SchedulescreenViewController: UIViewController {
-
-    @IBOutlet weak var label1: UILabel!
+class SchedulescreenViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
+    var scheduleNameArray2=NSArray()
+    var selectRoomArray2=NSArray()
+    var selectApplianceArray2=NSArray()
+    var selectTimeArray2=NSArray()
+    var selectDayArray2=NSArray()
     
-    @IBOutlet weak var label2: UILabel!
-    
-    @IBOutlet weak var label3: UILabel!
     
     @IBOutlet weak var scheduleButton: UIButton!
     @IBAction func scheduleAction(_ sender: UIButton) {
@@ -26,20 +26,42 @@ class SchedulescreenViewController: UIViewController {
         super.viewDidLoad()
         scheduleButton.layer.cornerRadius = 15
         scheduleButton.clipsToBounds = true
-        
-        label1.layer.cornerRadius = 15
-        label1.clipsToBounds = true
-        
-        
-        label2.layer.cornerRadius = 15
-        label2.clipsToBounds = true
-        
-        
-        label3.layer.cornerRadius = 15
-        label3.clipsToBounds = true
-        
+        self.dataForTable()
+
         
         // Do any additional setup after loading the view.
+    }
+    
+    func dataForTable() {
+        let result = DBWrapper.sharedObject.getAllTask(query: "select * from scheduleTable")
+        scheduleNameArray2 = result.scheduleName as NSArray
+        selectRoomArray2 = result.selectedRoom as NSArray
+        selectApplianceArray2 = result.selectedAppliances as NSArray
+        selectTimeArray2 = result.selectedTime as NSArray
+        selectDayArray2 = result.selectedDay as NSArray
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.dataForTable()
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return scheduleNameArray2.count
+
+
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TableViewCell
+        
+        
+        cell.scheduleNameLabel.text = scheduleNameArray2[indexPath.row] as? String
+        cell.selectedRoomLabel.text = selectRoomArray2[indexPath.row] as? String
+        cell.selectedAppliancesLabel.text = selectApplianceArray2[indexPath.row] as?
+        String
+        cell.selectedTimeLabel.text = selectTimeArray2[indexPath.row] as? String
+        
+        return cell
     }
 
     override func didReceiveMemoryWarning() {
