@@ -36,6 +36,23 @@ class ScheduleViewController: UIViewController,UITableViewDelegate,UITableViewDa
     
     @IBOutlet weak var texfield: UITextField!
     //DropDown button1 Action
+    @IBOutlet weak var sunButton: UIButton!
+    @IBOutlet weak var monButton: UIButton!
+    
+    
+    @IBOutlet weak var tueButton: UIButton!
+    
+    
+    @IBOutlet weak var wedButton: UIButton!
+    
+    
+    @IBOutlet weak var thuButton: UIButton!
+    
+    
+    @IBOutlet weak var friButton: UIButton!
+    
+    
+    @IBOutlet weak var satButton: UIButton!
     
     
     @IBOutlet weak var sunButton: UIButton!
@@ -92,9 +109,6 @@ class ScheduleViewController: UIViewController,UITableViewDelegate,UITableViewDa
         
     }
     
-    
-    
-  
     override func viewDidLoad() {
         super.viewDidLoad()
        updateButton.layer.cornerRadius = 15
@@ -141,6 +155,15 @@ class ScheduleViewController: UIViewController,UITableViewDelegate,UITableViewDa
         
         
         
+        thuButton.layer.cornerRadius = 10
+        thuButton.clipsToBounds = true
+        
+        friButton.layer.cornerRadius = 10
+        friButton.clipsToBounds = true
+        
+        satButton.layer.cornerRadius = 10
+        satButton.clipsToBounds = true
+    
         //To make textfield border invisible
         let border = CALayer()
         let width = CGFloat(0.5)
@@ -213,11 +236,24 @@ class ScheduleViewController: UIViewController,UITableViewDelegate,UITableViewDa
         
     }
     
-    
-    
     @IBAction func updateAction(_ sender: UIButton) {
         
         
+    }
+    @objc func doneCompleted(sender:UIDatePicker)
+    {
+        let formatter = DateFormatter()
+
+        formatter.timeStyle = .short
+        texfield.text = formatter.string(from: datePicker.date)
+       // datePicker.removeFromSuperview()
+        view.endEditing(true)
+    }
+    @objc func cancelCompleted(){
+        view.endEditing(true)
+    }
+ 
+    @IBAction func daySelectionAction(_ sender: UIButton) {
         
         let insertQuery="insert into scheduleTable(scheduleName,selectedRoom,selectedAppliances,selectedTime,selectedDay) values('\(textField.text!)','\(textfield1.text!)','\(textfield2.text!)','\(texfield.text!)','\(dayArray)')"
         
